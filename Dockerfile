@@ -37,15 +37,13 @@ ENV PATH /opt/conda/envs/trellis/bin:$PATH
 RUN chmod +x setup.sh
 
 # 执行setup和下载脚本
-RUN conda run -n trellis /bin/bash -c "./setup.sh --new-env --basic --xformers --flash-attn --diffoctreerast --spconv --mipgaussian --kaolin --nvdiffrast"
-
-RUN conda run -n trellis /bin/bash -c "./setup.sh --demo"
+RUN conda run -n trellis /bin/bash -c "./setup.sh --basic --xformers --flash-attn --diffoctreerast --spconv --mipgaussian --kaolin --nvdiffrast --demo"
 
 # 添加一些调试信息
 # RUN conda run -n trellis python -c "import sys; print(sys.path)"
 # RUN conda run -n trellis python -c "import pkg_resources; print([p for p in pkg_resources.working_set])"
 
-ENV PYTHONPATH="/app:${PYTHONPATH}"
+#ENV PYTHONPATH="/app:${PYTHONPATH}"
 
 RUN conda run -n trellis python ./example.py
 
