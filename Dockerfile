@@ -1,4 +1,4 @@
-FROM nvidia/cuda:12.1.0-devel-ubuntu20.04 as builder
+FROM nvidia/cuda:11.8.0-devel-ubuntu20.04 as builder
 
 # 安装miniconda
 ENV CONDA_DIR /opt/conda
@@ -41,7 +41,7 @@ RUN conda run -n trellis /bin/bash -c "./setup.sh --new-env --basic --xformers -
 
 RUN conda run -n trellis /bin/bash -c "./setup.sh --demo"
 
-RUN conda run -n trellis python ./download.py
+#RUN conda run -n trellis python ./download.py
 
 EXPOSE 7860
 
