@@ -1,4 +1,4 @@
-FROM nvidia/cuda:11.8.0-devel-ubuntu20.04 as builder
+FROM nvidia/cuda:12.1.0-devel-ubuntu20.04 as builder
 
 # 安装miniconda
 ENV CONDA_DIR /opt/conda
@@ -13,30 +13,21 @@ ENV CUDA_HOME=/usr/local/cuda
 ENV PATH=${CUDA_HOME}/bin:${PATH}
 ENV LD_LIBRARY_PATH=${CUDA_HOME}/lib64:${LD_LIBRARY_PATH}
 
-# 初始化conda
-SHELL ["/bin/bash", "-c"]
-RUN conda init bash && \
-    echo "source ~/.bashrc" > ~/.profile
-
-# 设置工作目录
-WORKDIR /app
-
-# 复制文件
-COPY . .
-
-# 创建新的环境
-RUN conda create -n trellis python=3.10 -y
-
-# 激活环境并安装包
-RUN . /root/.bashrc && \
-    conda activate trellis && \
-    conda install pytorch==2.4.0 torchvision==0.19.0 pytorch-cuda=11.8 -c pytorch -c nvidia -y
+# 创建新的环境并安装包
+RUN conda create -n trellis python=3.10 -y && \
+    conda run -n trellis conda install pytorch==2.4.0 torchvision==0.19.0 pytorch-cuda=12.1 -c pytorch -c nvidia -y
 
 # 安装构建工具
 RUN apt-get update && apt-get install -y \
     build-essential \
     git \
     && rm -rf /var/lib/apt/lists/*
+
+# 设置工作目录
+WORKDIR /app
+
+# 复制文件
+COPY . .
 
 # 设置默认环境
 ENV CONDA_DEFAULT_ENV=trellis
