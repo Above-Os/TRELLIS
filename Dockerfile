@@ -100,7 +100,7 @@ cpp12 \
 # RUN --mount=type=cache,target=/root/.cache/pip \
 #     pip install -r requirements.txt
 
-RUN ./setup.sh --new-env --basic --xformers --flash-attn --diffoctreerast --spconv --mipgaussian --kaolin --nvdiffrast
+RUN ./setup.sh --basic --xformers --flash-attn --diffoctreerast --spconv --mipgaussian --kaolin --nvdiffrast
 
 RUN ./setup.sh --demo
 
