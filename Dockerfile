@@ -17,6 +17,8 @@ RUN . /root/.bashrc && \
 ENV CONDA_DEFAULT_ENV=trellis
 ENV PATH /opt/conda/envs/trellis/bin:$PATH
 
+COPY . .
+
 # 执行setup和下载脚本
 RUN conda run -n trellis /bin/bash -c "./setup.sh --new-env --basic --xformers --flash-attn --diffoctreerast --spconv --mipgaussian --kaolin --nvdiffrast"
 
