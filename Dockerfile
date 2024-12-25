@@ -17,19 +17,14 @@ RUN . /root/.bashrc && \
 ENV CONDA_DEFAULT_ENV=trellis
 ENV PATH /opt/conda/envs/trellis/bin:$PATH
 
-# 确保使用正确的环境运行命令
-SHELL ["conda", "run", "-n", "trellis", "/bin/bash", "-c", "./setup.sh --new-env --basic --xformers --flash-attn --diffoctreerast --spconv --mipgaussian --kaolin --nvdiffrast"]
+# 执行setup和下载脚本
+RUN conda run -n trellis /bin/bash -c "./setup.sh --new-env --basic --xformers --flash-attn --diffoctreerast --spconv --mipgaussian --kaolin --nvdiffrast"
 
-SHELL ["conda", "run", "-n", "trellis", "/bin/bash", "-c", "./setup.sh --demo"]
+RUN conda run -n trellis /bin/bash -c "./setup.sh --demo"
 
-SHELL ["conda", "run", "-n", "trellis", "python", "./download.py"]
-
-# 设置工作目录
-WORKDIR /app
+RUN conda run -n trellis python ./download.py
 
 EXPOSE 7860
 
-COPY . .
-
 # 设置入口点
-ENTRYPOINT ["conda", "run", "-n", "trellis","python", "./app.py"]
+ENTRYPOINT ["conda", "run", "-n", "trellis", "python", "./app.py"]
