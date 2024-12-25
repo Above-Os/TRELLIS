@@ -32,6 +32,7 @@ RUN --mount=type=cache,target=/var/cache/zypp \
         install --no-confirm --auto-agree-with-licenses \
 python310-devel \
 python310-pip \
+python310-wheel \
 python310-setuptools \ 
     git \
     make \
