@@ -41,7 +41,7 @@ RUN conda run -n trellis /bin/bash -c "./setup.sh --new-env --basic --xformers -
 
 RUN conda run -n trellis /bin/bash -c "./setup.sh --demo"
 
-#RUN conda run -n trellis python ./download.py
+RUN conda run -n trellis python ./download.py
 
 EXPOSE 7860
 
