@@ -68,11 +68,12 @@ cpp12 \
 
 # Python 包
 # PyTorch, xFormers
-# RUN --mount=type=cache,target=/root/.cache/pip \
-#     pip list \
-#     && pip install -U setuptools==69.5.1 \
-#     && pip install torch==2.4.1 \
-#     && pip install numpy==1.26.4
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip list \
+    && pip install torch==2.4.0 \
+    && pip install torchvision==0.19.0 \
+    && pip install pytorch-cuda=11.8 
+    
 
 
 # 绑定环境变量 (依赖库 .so 文件)
