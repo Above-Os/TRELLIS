@@ -41,6 +41,13 @@ RUN conda run -n trellis /bin/bash -c "./setup.sh --new-env --basic --xformers -
 
 RUN conda run -n trellis /bin/bash -c "./setup.sh --demo"
 
+# 添加一些调试信息
+RUN conda run -n trellis python -c "import sys; print(sys.path)"
+RUN conda run -n trellis python -c "import pkg_resources; print([p for p in pkg_resources.working_set])"
+
+# 安装 trellis 包
+RUN conda run -n trellis pip install -e .
+
 RUN conda run -n trellis python ./download.py
 
 EXPOSE 7860
