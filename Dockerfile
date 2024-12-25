@@ -70,7 +70,7 @@ cpp12 \
 # PyTorch, xFormers
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip list \
-    && pip install torch==2.4.0 \
+    && pip install pytorch==2.4.0 \
     && pip install torchvision==0.19.0 \
     && pip install pytorch-cuda==11.8 
     
