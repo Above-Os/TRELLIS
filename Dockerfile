@@ -100,7 +100,7 @@ cpp12 \
 # RUN --mount=type=cache,target=/root/.cache/pip \
 #     pip install -r requirements.txt
 
-RUN python3 ./setup.sh --demo
+RUN ./setup.sh --demo
 
 RUN python3 ./download.py
 
