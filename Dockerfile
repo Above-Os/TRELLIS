@@ -45,8 +45,7 @@ RUN conda run -n trellis /bin/bash -c "./setup.sh --demo"
 RUN conda run -n trellis python -c "import sys; print(sys.path)"
 RUN conda run -n trellis python -c "import pkg_resources; print([p for p in pkg_resources.working_set])"
 
-# 安装 trellis 包
-RUN conda run -n trellis pip install -e .
+ENV PYTHONPATH="/app:${PYTHONPATH}"
 
 RUN conda run -n trellis python ./download.py
 
