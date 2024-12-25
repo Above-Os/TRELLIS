@@ -73,9 +73,8 @@ cpp12 \
 #     && pip install -U setuptools==69.5.1 \
 #     && pip install torch==2.4.1 \
 #     && pip install numpy==1.26.4
-         
 
-RUN python3 ./download.py
+
 # 绑定环境变量 (依赖库 .so 文件)
 # ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH}\
 # :/usr/local/lib64/python3.12/site-packages/torch/lib\
@@ -102,6 +101,8 @@ RUN python3 ./download.py
 #     pip install -r requirements.txt
 
 RUN python3 ./setup.sh --demo
+
+RUN python3 ./download.py
 
 ################################################################################
 
