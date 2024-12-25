@@ -1,42 +1,35 @@
-# 使用官方Ubuntu基础镜像
-FROM ubuntu:20.04
+FROM continuumio/miniconda3
 
-# 避免交互式提示
-ENV DEBIAN_FRONTEND=noninteractive
+# 初始化conda以便于使用conda activate
+SHELL ["/bin/bash", "-c"]
+RUN conda init bash && \
+    echo "source ~/.bashrc" > ~/.profile
+
+# 创建新的环境
+RUN conda create -n trellis python=3.10 -y
+
+# 激活环境并安装包
+RUN . /root/.bashrc && \
+    conda activate trellis && \
+    conda install pytorch==2.4.0 torchvision==0.19.0 pytorch-cuda=11.8 -c pytorch -c nvidia -y
+
+# 设置默认环境
+ENV CONDA_DEFAULT_ENV=trellis
+ENV PATH /opt/conda/envs/trellis/bin:$PATH
+
+# 确保使用正确的环境运行命令
+SHELL ["conda", "run", "-n", "trellis", "/bin/bash", "-c", "./setup.sh --new-env --basic --xformers --flash-attn --diffoctreerast --spconv --mipgaussian --kaolin --nvdiffrast"]
+
+SHELL ["conda", "run", "-n", "trellis", "/bin/bash", "-c", "./setup.sh --demo"]
+
+SHELL ["conda", "run", "-n", "trellis", "python", "./download.py"]
+
+# 设置工作目录
+WORKDIR /app
 
 EXPOSE 7860
 
 COPY . .
 
-# 安装基本依赖
-RUN apt-get update && apt-get install -y \
-    wget \
-    bzip2 \
-    ca-certificates \
-    curl \
-    git \
-    && rm -rf /var/lib/apt/lists/*
-
-# 设置Miniconda安装路径
-ENV CONDA_DIR /opt/conda
-ENV PATH $CONDA_DIR/bin:$PATH
-
-# 下载并安装Miniconda
-RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh \
-    && bash ~/miniconda.sh -b -p $CONDA_DIR \
-    && rm ~/miniconda.sh
-
-# 初始化conda
-RUN conda init bash
-
-# 设置默认环境
-ENV CONDA_DEFAULT_ENV trellis
-
-
-RUN ./setup.sh --new-env --basic --xformers --flash-attn --diffoctreerast --spconv --mipgaussian --kaolin --nvdiffrast
-
-RUN ./setup.sh --demo
-
-RUN python ./download.py
-
-CMD ["python","./app.py"]
+# 设置入口点
+ENTRYPOINT ["conda", "run", "-n", "trellis","python", "./app.py"]
