@@ -43,7 +43,7 @@ RUN conda run -n trellis /bin/bash -c "./setup.sh --basic --xformers --flash-att
 # RUN conda run -n trellis python -c "import sys; print(sys.path)"
 # RUN conda run -n trellis python -c "import pkg_resources; print([p for p in pkg_resources.working_set])"
 
-#ENV PYTHONPATH="/app:${PYTHONPATH}"
+ENV PYTHONPATH="/app:${PYTHONPATH}"
 
 RUN conda run -n trellis python ./example.py
 
