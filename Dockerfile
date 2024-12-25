@@ -14,8 +14,8 @@ ENV PATH=${CUDA_HOME}/bin:${PATH}
 ENV LD_LIBRARY_PATH=${CUDA_HOME}/lib64:${LD_LIBRARY_PATH}
 
 # 创建新的环境并安装包
-RUN conda create -n trellis python=3.10 -y && \
-    conda run -n trellis conda install pytorch==2.4.0 torchvision==0.19.0 pytorch-cuda=12.1 -c pytorch -c nvidia -y
+# RUN conda create -n trellis python=3.10 -y && \
+#     conda run -n trellis conda install pytorch==2.4.0 torchvision==0.19.0 pytorch-cuda=12.1 -c pytorch -c nvidia -y
 
 # 安装构建工具
 RUN apt-get update && apt-get install -y \
@@ -30,24 +30,24 @@ WORKDIR /app
 COPY . .
 
 # 设置默认环境
-ENV CONDA_DEFAULT_ENV=trellis
-ENV PATH /opt/conda/envs/trellis/bin:$PATH
+#ENV CONDA_DEFAULT_ENV=trellis
+#ENV PATH /opt/conda/envs/trellis/bin:$PATH
 
 # 确保脚本可执行
 RUN chmod +x setup.sh
 
 # 执行setup和下载脚本
-RUN conda run -n trellis /bin/bash -c "./setup.sh --basic --xformers --flash-attn --diffoctreerast --spconv --mipgaussian --kaolin --nvdiffrast --demo"
+RUN  ./setup.sh --new-env --basic --xformers --flash-attn --diffoctreerast --spconv --mipgaussian --kaolin --nvdiffrast --demo
 
 # 添加一些调试信息
 # RUN conda run -n trellis python -c "import sys; print(sys.path)"
 # RUN conda run -n trellis python -c "import pkg_resources; print([p for p in pkg_resources.working_set])"
 
-ENV PYTHONPATH="/app:${PYTHONPATH}"
+#ENV PYTHONPATH="/app:${PYTHONPATH}"
 
-RUN conda run -n trellis python ./example.py
+RUN python ./example.py
 
 EXPOSE 7860
 
 # 设置入口点
-ENTRYPOINT ["conda", "run", "-n", "trellis", "python", "./app.py"]
+ENTRYPOINT ["python", "./app.py"]
